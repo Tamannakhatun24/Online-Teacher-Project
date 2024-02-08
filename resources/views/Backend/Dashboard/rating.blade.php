@@ -1,0 +1,108 @@
+@extends('layouts.app')
+
+@section('backend_content')
+
+                <div class="wrapper">
+                            <div class="container-fluid">
+
+                                <!-- Page-Title -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="page-title-box">
+                                            <div class="btn-group pull-right">
+                                                <ol class="breadcrumb hide-phone p-0 m-0">
+                                                    <li class="breadcrumb-item"><a href="#">Highdmin</a></li>
+                                                    <li class="breadcrumb-item"><a href="#">Extra Pages</a></li>
+                                                    <li class="breadcrumb-item active">Profile</li>
+                                                </ol>
+                                            </div>
+                                            <h4 class="page-title">Profile</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end page title end breadcrumb -->
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- meta -->
+                                        <div class="profile-user-box card-box bg-custom">
+                                            <div class="row">
+                                                    <!-- <span class="pull-left mr-3"><img src="assets/images/users/avatar-1.jpg" alt="" class="thumb-lg rounded-circle"></span> -->
+                                                    <div class="media-body text-white">
+                                                        <h4 class="mt-1 mb-1 font-18">{{Auth::user()->name}}</h4>
+                                                        <p class="font-13 text-light">
+                                                          <?php
+                                                            if(Auth::user()->role==1){
+                                                              echo "Super Admin";
+                                                            }
+                                                            elseif(Auth::user()->role==2){
+                                                              echo "Student";
+                                                            }
+                                                            else{
+                                                              echo "tutore";
+                                                            }
+
+                                                         ?>
+                                                        </p>
+                                                        <div class="text-left">
+                                                            <a type="button" href="{{url('Backend/add_information')}}" class="btn btn-light waves-effect">
+                                                                <i class="mdi mdi-account-settings-variant mr-1"></i> Add Your Information
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!--/ meta -->
+                                    </div>
+                                </div>
+                                <!-- end row -->
+
+
+
+                                @if(Auth::user()->role == 2)
+
+
+                                <div class="container-fluid">
+                                    <div class="row">
+                                      <div class="offset-4 col-lg-4 bg-info p-3">
+                                        @if(session('message'))
+                                        <div class="alert alert-success">
+                                            {{session('message')}}
+                                        </div>
+                                        @endif
+                                        @if($errors->all())
+                                        <div class="alert alert-success">
+                                            @foreach($errors->all() as $e)
+                                                <h6>{{ $e}}</h6>
+                                            @endforeach
+                                        </div>
+                                        @endif
+                                        <h5>Teacher Rating  Here...</h5>
+                                          <form  action="{{url('rating_insert')}}" method="post">
+                                            @csrf
+                                            <div class="form-group">
+                                              <label for="teacher_name">Teacher Id</label>
+                                              <input   class="form-control"  value="{{ $information->tutor_id }}" disabled>
+                                              <input  type="text" class="form-control" id="teacher_name" name="teacher_id" value="{{ $information->tutor_id }}" hidden>
+                                            </div>
+                                            <div class="form-group">
+                                              <label for="star">Review Star</label>
+                                              <select id="star" class="form-control" name="star">
+                                                <option value="1">Plesae select.....</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="5">5</option>
+                                              </select>
+                                            </div>
+                                            <button class="btn" type="submit">Submit</button>
+                                          </form>
+                                      </div>
+                                    </div>
+                                </div>
+                                @endif
+
+
+  @endsection
